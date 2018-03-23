@@ -1,0 +1,208 @@
+{% extends 'layout.html' %}
+
+{% block title %}Inregistrare{% endblock %}
+
+{% form_theme form _self %}
+
+{# form_errors.html.twig #}
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+        <ul class="store_errors">
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block additional_javascript %}
+<script type="text/javascript" src="/js/select2.min.js"></script>
+<script>
+jQuery('#form_county_id').select2();
+</script>
+{% endblock %}
+
+{% block additional_css %}
+<link rel='stylesheet' href='/css/select2.css' type='text/css' media='all'/>
+<style>
+ul.store_errors {
+	padding-left: 0px;
+	list-style-type: none;
+	color: red;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wrap contentclass" role="document">
+	<div class="container">
+		<div class="woocommerce">
+			{% for message in app.session.flashBag.get('message') %}
+			<div class="woocommerce-message">
+				{{ message }}
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div id="pageheader" class="titleclass">
+		<div class="container">
+			<div class="page-header">
+				<h1 class="entry-title" itemprop="name">
+					Inregistrare
+				</h1>
+			</div>
+		</div>
+		<!--container-->
+	</div>
+	<!--titleclass-->
+	<div id="content" class="container">
+		<div class="row">
+			<div class="main col-md-12" role="main">
+				<div class="entry-content" itemprop="mainContentOfPage">
+					<div class="woocommerce">
+						<div class="woocommerce-info">Ati mai cumparat de la noi? <a href="{{ path('login_form') }}" class="showlogin">Click aici pentru autentificare</a></div>
+						<form method="post" class="login" style="display:none;">
+							<p>Daca ati mai cumparat de la noi, va rugam sa va autentificati. Daca sunteti utilizator nou, va rugam sa completati campurile de mai jos.</p>
+							<p class="form-row form-row-first">
+								<label for="username">Username or email <span class="required">*</span></label>
+								<input type="text" class="input-text" name="username" id="username" />
+							</p>
+							<p class="form-row form-row-last">
+								<label for="password">Password <span class="required">*</span></label>
+								<input class="input-text" type="password" name="password" id="password" />
+							</p>
+							<div class="clear"></div>
+						</form>
+						<form name="checkout" method="post" class="checkout woocommerce-checkout" action="" novalidate>
+							<div class="col2-set" id="customer_details">
+								{{ form_errors(form) }}
+								<div class="col-1">
+									<div class="woocommerce-billing-fields">
+										<h3>Formular inregistrare</h3>
+										<p class="form-row form-row-wide">
+											{{ form_errors(form.name) }}
+											{{ form_label(form.name) }}
+											{{ form_widget(form.name, { attr: { class : 'input-text' } }) }}
+										</p>
+										<p class="form-row form-row-wide">
+											{{ form_errors(form.email) }}
+											{{ form_label(form.email) }}
+											{{ form_widget(form.email, { attr: { class : 'input-text' }}) }}
+										</p>
+										<p class="form-row form-row-wide">
+											{{ form_errors(form.address) }}
+											{{ form_label(form.address) }}
+											{{ form_widget(form.address, { attr: { class : 'input-text' } }) }}
+										</p>
+										<p class="form-row form-row-wide">
+											{{ form_errors(form.postal_code) }}
+											{{ form_label(form.postal_code) }}
+											{{ form_widget(form.postal_code, { attr: { class : 'input-text' } }) }}
+										</p>
+										<p class="form-row form-row-wide">
+											{{ form_errors(form.county_id) }}
+											{{ form_label(form.county_id) }}
+											{{ form_widget(form.county_id, { attr: { class : 'input-text' } }) }}
+										</p>
+										<p class="form-row form-row-wide">
+											{{ form_errors(form.password) }}
+											{{ form_label(form.password) }}
+											{{ form_widget(form.password, { attr: { class : 'input-text' }}) }}
+										</p>
+									</div>
+									<div class="clear"></div>
+									<div class="form-row place-order">
+										{{ form_widget(form.save, { attr: {class: 'button alt', style: 'background-color: #2d5c88; color: #FFF; font-size: 14px;'} }) }}
+									</div>
+								</div>
+								<div class="col-2">
+									&nbsp;
+								</div>
+							</div>
+							{#
+							<h3 id="order_review_heading">Comanda dumneavoastra</h3>
+							<div id="order_review" class="woocommerce-checkout-review-order">
+								<table class="shop_table woocommerce-checkout-review-order-table">
+									<thead>
+										<tr>
+											<th class="product-name">Product</th>
+											<th class="product-total">Total</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="cart_item">
+											<td class="product-name">
+												Dell Laptop&nbsp;							 <strong class="product-quantity">&times; 1</strong>													
+											</td>
+											<td class="product-total">
+												<span class="amount">&euro;260.00</span>						
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr class="cart-subtotal">
+											<th>Subtotal</th>
+											<td><span class="amount">&euro;260.00</span></td>
+										</tr>
+										<tr class="shipping">
+											<th>Shipping</th>
+											<td>
+												Free Shipping				<input type="hidden" name="shipping_method[0]" data-index="0" id="shipping_method_0" value="free_shipping" class="shipping_method" />
+											</td>
+										</tr>
+										<tr class="order-total">
+											<th>Total</th>
+											<td><strong><span class="amount">&euro;260.00</span></strong> </td>
+										</tr>
+									</tfoot>
+								</table>
+								<div id="payment" class="woocommerce-checkout-payment">
+									<ul class="payment_methods methods">
+										<li class="payment_method_bacs">
+											<input id="payment_method_bacs" type="radio" class="input-radio" name="payment_method" value="bacs"  data-order_button_text="" />
+											<label for="payment_method_bacs">
+											Direct Bank Transfer 	</label>
+											<div class="payment_box payment_method_bacs" style="display:none;">
+												<p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won&#8217;t be shipped until the funds have cleared in our account.</p>
+											</div>
+										</li>
+										<li class="payment_method_cheque">
+											<input id="payment_method_cheque" type="radio" class="input-radio" name="payment_method" value="cheque"  data-order_button_text="" />
+											<label for="payment_method_cheque">
+											Cheque Payment 	</label>
+											<div class="payment_box payment_method_cheque" style="display:none;">
+												<p>Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
+											</div>
+										</li>
+										<li class="payment_method_paypal">
+											<input id="payment_method_paypal" type="radio" class="input-radio" name="payment_method" value="paypal"  checked='checked' data-order_button_text="Proceed to PayPal" />
+											<label for="payment_method_paypal">
+											PayPal <img src="http://woo.local/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png" alt="PayPal Acceptance Mark" /><a href="https://www.paypal.com/ro/cgi-bin/webscr?cmd=xpt/Marketing/general/WIPaypal-outside" class="about_paypal" onclick="javascript:window.open('https://www.paypal.com/ro/cgi-bin/webscr?cmd=xpt/Marketing/general/WIPaypal-outside','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" title="What is PayPal?">What is PayPal?</a>	</label>
+											<div class="payment_box payment_method_paypal" >
+												<p>Pay via PayPal; you can pay with your credit card if you don&#8217;t have a PayPal account.</p>
+											</div>
+										</li>
+									</ul>
+									<div class="form-row place-order">
+										<noscript>Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so.<br/><input type="submit" class="button alt" name="woocommerce_checkout_update_totals" value="Update totals" /></noscript>
+										<input type="hidden" id="_wpnonce" name="_wpnonce" value="fcd69f014d" /><input type="hidden" name="_wp_http_referer" value="/index.php/checkout/" />
+										<input type="submit" class="button alt" name="woocommerce_checkout_place_order" id="place_order" value="Place order" data-value="Place order" />
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+							#}
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- /.main -->            
+		</div>
+		<!-- /.row-->
+	</div>
+	<!-- /.content -->
+</div>
+<!-- /.wrap -->
+{% endblock %}

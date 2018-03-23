@@ -1,0 +1,95 @@
+{% extends 'layout.html' %}
+
+{% block title %}Autentificare{% endblock %}
+
+{# form_errors.html.twig #}
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+        <ul class="store_errors">
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block additional_css %}
+<style>
+	ul.store_errors {
+		list-style-type: none;
+		color: red;
+		padding-left: 0px;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wrap contentclass" role="document">
+	<div class="container">
+		<div class="woocommerce">
+			{% for message in app.session.flashBag.get('message') %}
+			<div class="woocommerce-message">
+				{{ message }}
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
+    {% if app['user'] %}
+        <p>Salut, {{ app.user.displayName }}.</p>
+        <p><a href="{{ path('user.logout') }}">Sign out</a></p>
+
+    {% else %}
+		<div id="pageheader" class="titleclass">
+			<div class="container">
+				<div class="page-header">
+					<h1 class="entry-title" itemprop="name">
+						Autentificare
+					</h1>
+				</div>
+			</div>
+			<!--container-->
+		</div>
+
+		<div id="content" class="container">
+			<div class="row">
+				<div class="main col-md-12" role="main">
+					<div class="entry-content" itemprop="mainContentOfPage">
+						{% if error %}
+						<ul class="store_errors">
+							<li>{{ error|nl2br }}</li>
+						</ul>
+						{% endif %}
+						<div class="woocommerce">
+							<form name="checkout" method="post" class="checkout woocommerce-checkout" action="{{ path('user.login_check') }}" novalidate>
+								<div class="col2-set" id="customer_details">
+									<div class="col-1">
+										<div class="woocommerce-billing-fields">
+											<p class="form-row form-row-wide">
+												<label for="form_name">Email</label>
+												<input type="text" id="inputEmail" name="_username" class="input-text">
+											</p>
+											<p class="form-row form-row-wide">
+												<label for="form_name">Parola</label>
+												<input type="password" name="_password" class="input-text">
+											</p>
+										</div>
+										<div class="clear"></div>
+										<div class="form-row place-order">
+											<button type="submit" id="form_save" name="form[save]" class="button alt" style="background-color: #2d5c88; color: #FFF; font-size: 14px;">Login!</button>
+										</div>
+									</div>
+									<div class="col-2">
+										&nbsp;
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    {% endif %}
+{% endblock %}

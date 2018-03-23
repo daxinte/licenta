@@ -1,0 +1,19 @@
+database:
+    driver: pdo_mysql
+    host: localhost
+    dbname: db_name
+    user: db_user
+    password: db_pass
+    charset: utf8
+upload:
+    images_dir: /var/www/html/lstore/web/media/images/
+    images_www: /media/images/
+
+images:
+    sizes:
+        size1200: 1200
+        size400: 400
+        size268: 268
+        size180: 180
+    default_store: /media/defaults/image_not_available.268x268.png
+    default_store1: /media/defaults/default-store.jpg

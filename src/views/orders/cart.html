@@ -1,0 +1,104 @@
+{% extends 'layout.html' %}
+
+{% block title %}Cosul de cumparaturi{% endblock %}
+
+{% block content %}
+{% set imagesWWW = app.url_generator.generate('images_www') %}
+<div role="document" class="wrap contentclass">
+    <div class="container">
+        <div class="woocommerce"></div>
+    </div>
+    <div class="titleclass" id="pageheader">
+        <div class="container">
+            <div class="page-header">
+                <h1 itemprop="name" class="entry-title">
+					{{ pageTitle }}
+                </h1>
+            </div>
+        </div>
+        <!--container-->
+    </div>
+    <!--titleclass-->
+    <div class="container" id="content">
+        <div class="row">
+            <div role="main" class="main col-md-12">
+                <div itemprop="mainContentOfPage" class="entry-content">
+                    <div class="woocommerce">
+						{% if cart.itemsNo < 1 %}
+						<p class="cart-empty">Momentan, nu exista nici un produs in cos.</p>
+						{% else %}
+                        <form method="post" action="">
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                    <tr>
+                                        <th class="product-remove">&nbsp;</th>
+                                        <th class="product-thumbnail">&nbsp;</th>
+                                        <th class="product-name">Produs</th>
+                                        <th class="product-price">Pret</th>
+                                        <th class="product-quantity">Cantitate</th>
+                                        <th class="product-subtotal">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+									{% for i in cart.items %}
+                                    <tr class="cart_item">
+                                        <td class="product-remove">
+                                            <a title="Elimina acest produs" class="remove" href="">×</a>
+                                        </td>
+                                        <td class="product-thumbnail">
+											<a href=""><img width="180" height="180" alt="" class="attachment-shop_thumbnail wp-post-image" src="{{ i.item.getImgPath() }}"></a>
+                                        </td>
+                                        <td class="product-name">
+											<a href="{{ path('products_details', {slug: i.item.slug}) }}">{{ i.item.title }}</a>
+                                        </td>
+                                        <td class="product-price">
+											<span class="amount">€ {{ i.item.price }}</span>
+                                        </td>
+                                        <td class="product-quantity">
+											<div class="quantity buttons_added"><input type="button" class="minus" value="-"><input type="number" size="4" class="input-text qty text" title="Cantitate" value="{{ i.quantity }}" name="cart[9bf31c7ff062936a96d3c8bd1f8f2ff3][qty]" max="14" min="0" step="1"><input type="button" class="plus" value="+"></div>
+                                        </td>
+                                        <td class="product-subtotal">
+											<span class="amount">€ {{ i.item.price * i.quantity }}</span>
+                                        </td>
+                                    </tr>
+									{% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
+
+                        <div class="cart-collaterals">
+                            <div class="cart_totals ">
+                                <h2>Total</h2>
+                                <table cellspacing="0">
+                                    <tbody>
+                                        <tr class="order-total">
+                                            <th>Total</th>
+											<td><strong><span class="amount">€{{ cart.totals }}</span></strong> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="wc-proceed-to-checkout">
+									{% if is_granted('ROLE_USER') %}
+									<a class="checkout-button button alt wc-forward" href="{{ path('checkout') }}">Finalizeaza cumparaturile</a>
+									{% else %}
+									<p>Pentru a putea continua cumparaturile, trebuie sa fii autentificat!</p>
+									<a class="checkout-button button alt wc-forward" href="{{ path('login_form') }}">Ma autentific</a>
+									<a class="checkout-button button alt wc-forward" href="{{ path('user_register') }}">Creez cont</a>
+									{% endif %}
+                                </div>
+                            </div>
+                        </div>
+						{% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- /.main -->            
+        </div>
+        <!-- /.row-->
+    </div>
+    <!-- /.content -->
+</div>
+<script>
+jQuery(function($){$("div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)").addClass("buttons_added").append('<input type="button" value="+" class="plus" />').prepend('<input type="button" value="-" class="minus" />'),$(document).on("click",".plus, .minus",function(){var t=$(this).closest(".quantity").find(".qty"),a=parseFloat(t.val()),n=parseFloat(t.attr("max")),s=parseFloat(t.attr("min")),e=t.attr("step");a&&""!==a&&"NaN"!==a||(a=0),(""===n||"NaN"===n)&&(n=""),(""===s||"NaN"===s)&&(s=0),("any"===e||""===e||void 0===e||"NaN"===parseFloat(e))&&(e=1),$(this).is(".plus")?t.val(n&&(n==a||a>n)?n:a+parseFloat(e)):s&&(s==a||s>a)?t.val(s):a>0&&t.val(a-parseFloat(e)),t.trigger("change")})});
+</script>
+{% endblock %}

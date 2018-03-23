@@ -1,0 +1,52 @@
+{% extends 'admin/layout.html' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block content %}
+<ol class="breadcrumb">
+	<li><a href="{{ app.url_generator.generate('admin_dashboard') }}">Acasa</a></li>
+	<li><a href="{{ app.url_generator.generate('admin_sections') }}">Sectiuni</a></li>
+	<li class="active">{{ currPageTitle }}</li>
+</ol>
+<div class="row">
+	<div class="col-sm-12">
+		<h3>{{ currPageTitle|default('Adaugare categorie') }}</h3>
+	</div>
+</div>
+<div class="panel-body">
+	{% for message in app.session.getFlashBag.get('message') %}
+	<div class="alert alert-success" role="alert">{{ message }}</div>
+	{% endfor %}
+	{{ form_start(form, { 
+					action: formAction
+					,attr: {novalidate: 'novalidate' }
+					}) }}
+	{{ form_errors(form) }}
+
+	{{ form_row(form.title) }}
+	{{ form_row(form.description) }}
+	{{ form_row(form.order_no) }}
+	{{ form_row(form.slug) }}
+	{{ form_row(form.active) }}
+	{{ form_widget(form.id) }}
+
+    <hr />
+
+	<div class="form-group">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-10">
+			{{ form_widget(form.submit) }}
+			{% if form.vars.data.id %}
+			<a href="{{ app.url_generator.generate('admin_sections_delete', {id: form.vars.data.id}) }}" onclick="return confirm('Sigur stergeti?') ? true : false;" class="btn btn-danger" >Sterge</a>
+			{% endif %}
+			<a href="{{ app.url_generator.generate('admin_sections_create') }}" class="btn btn-default" >Adauga sectiune noua</a>
+			<a href="{{ app.url_generator.generate('admin_sections') }}" class="btn btn-default" >Inapoi la lista</a>
+		</div>
+	</div>
+	{{ form_rest(form) }}
+{{ form_end }}
+</div>
+{% endblock %}
+
+{% block additional_css %}
+<link href="/css/datatables.bootstrap.css" rel="stylesheet"></script>
+{% endblock %}

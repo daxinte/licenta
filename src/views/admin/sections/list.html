@@ -1,0 +1,28 @@
+{% extends 'admin/layout.html' %}
+
+{% block content %}
+<ol class="breadcrumb">
+	<li><a href="{{ app.url_generator.generate('admin_dashboard') }}">Acasa</a></li>
+	<li class="active">Sectiuni</li>
+</ol>
+{% for message in app.session.getFlashBag.get('message') %}
+<div class="alert alert-success" role="alert">{{ message }}</div>
+{% endfor %}
+{{ gridO.renderTable|raw }}
+<div class="row">
+	<div class="col-sm-12">
+		<a href="{{ app.url_generator.generate('admin_sections_create') }}" class="btn btn-default pull-right">Sectiune noua</a>
+	</div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script src="/datatables/media/js/jquery.dataTables.js"></script>
+<script src="/js/dataTables.bootstrap.js"></script>
+{{ gridO.renderJsSettings|raw }}
+{% endblock %}
+
+{% block additional_css %}
+<link href="/css/datatables.bootstrap.css" rel="stylesheet"></script>
+{% endblock %}
+

@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% block title %}Pagina de produse{% endblock %}
+
+{% block content %}
+{% set imagesWWW = app.url_generator.generate('images_www') %}
+<div class="wrap contentclass" role="document">
+    <div class="container">
+        <div class="woocommerce">
+			{% for message in app.session.flashBag.get('message') %}
+			<div class="woocommerce-message">
+				<a href="{{ path('cart') }}" class="button wc-forward">Vezi cosul</a> {{ message }}
+			</div>
+			{% endfor %}
+		</div>
+    </div>
+    <div id="content" class="container">
+        <div class="row">
+            <div class="main col-md-12" role="main">
+                <div class="page-header">
+                    <form class="woocommerce-ordering" method="get">
+                        <select name="orderby" class="orderby">
+                            <option value="menu_order"  selected='selected'>Default sorting</option>
+                            <option value="popularity" >Sort by popularity</option>
+                            <option value="rating" >Sort by average rating</option>
+                            <option value="date" >Sort by newness</option>
+                            <option value="price" >Sort by price: low to high</option>
+                            <option value="price-desc" >Sort by price: high to low</option>
+                        </select>
+                    </form>
+					<h1 class="page-title">{{ pageTitle }}</h1>
+                    <p class="woocommerce-result-count">
+                        Au fost gasite <strong>{{ products.count }}</strong> produse
+                    </p>
+                </div>
+                <div class="clearfix">
+                </div>
+                <div class="clearfix rowtight product_category_padding">  </div>
+                <div id="product_wrapper" class="products kt-masonry-init rowtight shopcolumn4 shopfullwidth" data-masonry-selector=".kad_product">
+                {% for p in products %}
+                    <div class="tcol-md-3 tcol-sm-4 tcol-xs-6 tcol-ss-12 kad_product">
+                        <div class="grid_item product_item clearfix post-15 product type-product status-publish has-post-thumbnail sale shipping-taxable purchasable product-type-simple instock">
+							<a class="product_item_link" href="{{ path('products_details', {slug: p.slug}) }}">
+							{% if p.Images.offsetExists(0) %}
+								{% set imgPath = imagesWWW ~ p.Images.first.getResizedName('268') %}
+							{% else %}
+								{% set imgPath = app.config.images.default_store1 %}
+							{% endif %}
+							<img width="268" height="268" alt="{{ p.title }}" class="attachment-shop_catalog wp-post-image" src="{{ imgPath }}">
+                            </a>
+                            <div class="product_details">
+                                <a class="product_item_link" href="http://woo.local/index.php/product/dell-laptop/">
+                                    <h5>{{ p.title }}</h5>
+                                </a>
+                                <div class="product_excerpt">
+                                    <p>{{ p.description }}</p>
+                                </div>
+                            </div>
+                            <span class="product_price headerfont"><ins><span class="amount">€ {{ p.price }}</span></ins></span>
+							<a class="button kad-btn headerfont kad_add_to_cart add_to_cart_button product_type_simple" rel="nofollow" href="{{ path('add_to_cart', {slug: p.slug}) }}">Adauga la cos</a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- /.row-->
+    </div>
+    <!-- /.content -->
+</div>
+<!-- /.wrap -->
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends 'admin/layout.html' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block content %}
+{% set imagesWWW = app.url_generator.generate('images_www') %}
+<ol class="breadcrumb">
+	<li><a href="{{ app.url_generator.generate('admin_dashboard') }}">Acasa</a></li>
+	<li><a href="{{ app.url_generator.generate('admin_products') }}">Produse</a></li>
+	<li class="active">{{ currPageTitle }}</li>
+</ol>
+<div class="row">
+	<div class="col-sm-12">
+		<h3>{{ pageTitle|default('Adaugare produs') }}</h3>
+	</div>
+</div>
+<div class="panel-body">
+	{% for message in app.session.getFlashBag.get('message') %}
+	<div class="alert alert-success" role="alert">{{ message }}</div>
+	{% endfor %}
+	{{ form_start(form, { 
+					action: formAction
+					,attr: {novalidate: 'novalidate' }
+					}) }}
+	{{ form_errors(form) }}
+
+	<h4>Detalii</h4>
+	<hr />
+	{{ form_row(form.title) }}
+	{{ form_row(form.code) }}
+	{{ form_row(form.price) }}
+	{{ form_row(form.stock) }}
+	{{ form_row(form.active) }}
+
+	<h4>Categorizare</h4>
+	<hr />
+	{#{ form_row(form.section_id) }#}
+	{{ form_row(form.category_id) }}
+	{{ form_row(form.brand_id) }}
+
+	<h4>Descriere</h4>
+	<hr />
+	{{ form_row(form.description, { attr: { rows: 7 } }) }}
+	{{ form_row(form.tags) }}
+
+	{% if form.vars.data.id|default(0) %}
+	<h4>Imagini</h4>
+	<hr />
+	<div class="container">
+		<div id="imgsGallery" class="row gallery">
+			{% for ia in object.Images %}
+			<div class="col-md-2 col-sm-4 col-xs-6">
+				<a href="{{ imagesWWW ~ ia.getResizedName(1200) }}" data-gallery title="Pic 1"><img class="img-responsive" src="{{ imagesWWW ~ ia.getResizedName(300) }}" /></a>
+			</div>
+			{% else %}
+			<p>Nici o imagine momentan</p>
+			{% endfor %}
+		</div>
+		<div id="blueimp-gallery" class="blueimp-gallery">
+			<div class="slides"></div>
+			<h3 class="title"></h3>
+			<a class="prev">‹</a>
+			<a class="next">›</a>
+			<a class="close">×</a>
+			<a class="play-pause"></a>
+			<ol class="indicator"></ol>
+		</div>
+		<div class="clear"></div>
+		{% if form.vars.data.id %}
+		<br />
+		<a class="btn btn-default" href="{{ app.url_generator.generate('admin_products_images', { id: form.vars.data.id }) }}">Administrare Imagini&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></a>
+		{% endif %}
+
+	</div>
+	{% endif %}
+	<h4>SEO</h4>
+	<hr />
+	{{ form_row(form.slug) }}
+	{{ form_row(form.meta_title) }}
+	{{ form_row(form.meta_keywords) }}
+	{{ form_row(form.meta_description) }}
+	{{ form_widget(form.id) }}
+
+	<hr />
+	<div class="form-group">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-10">
+			{{ form_widget(form.submit) }}
+			{% if form.vars.data.id %}
+			<a href="{{ app.url_generator.generate('admin_products_delete', {id: form.vars.data.id}) }}" onclick="return confirm('Sigur stergeti produsul?') ? true : false;" class="btn btn-danger" >Sterge</a>
+			{% endif %}
+			<a href="{{ app.url_generator.generate('admin_products_create') }}" class="btn btn-default" >Adauga produs nou</a>
+			<a href="{{ app.url_generator.generate('admin_products') }}" class="btn btn-default" >Inapoi la lista</a>
+		</div>
+	</div>
+	{{ form_rest(form) }}
+{#{ form_end }#}
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script language="javascript">
+$('#form_language').on('change', function() {
+	var elem = $(this)
+	var currLocLangPart = '/{{ app.request.get('_locale')}}'
+	var currLoc     = window.location.pathname
+	var newLoc	= currLoc.replace(currLocLangPart, '/'+elem.val())
+
+	document.location = newLoc
+	return;
+})
+</script>
+{% if form.vars.data.id|default(0) %}
+<script src="/js/blueimp-gallery.min.js"></script>
+<script>
+$('#imgsGallery').on('click', function (event) {
+    event = event || window.event;
+    var target = event.target || event.srcElement,
+        link = target.src ? target.parentNode : target,
+        options = {index: link, event: event},
+        links = this.getElementsByTagName('a');
+    blueimp.Gallery(links, options);
+});
+
+</script>
+{% endif %}
+{% endblock %}
+
+{% block additional_css %}
+{#<link href="/css/datatables.bootstrap.css" rel="stylesheet"></script>#}
+{% if form.vars.data.id|default(0) %}
+<link rel="stylesheet" href="/css/blueimp-gallery.min.css">
+<link rel="stylesheet" href="/css/bootstrap-image-gallery.min.css">
+{% endif %}
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+
+{% block title %}Cosul de cumparaturi{% endblock %}
+
+{% block content %}
+<div class="wrap contentclass" role="document">
+    <div class="container">
+        <div class="woocommerce">
+			{% for message in app.session.flashBag.get('message') %}
+			<div class="woocommerce-message">
+				<a href="{{ path('cart') }}" class="button wc-forward">Vezi cosul</a> {{ message }}
+			</div>
+			{% endfor %}
+		</div>
+    </div>
+    <div id="content" class="container">
+        <div class="row">
+            <div class="main col-md-12" role="main">
+                <div class="product_header clearfix">
+                    <div class="cat_back_btn headerfont"><i class="icon-arrow-left"></i> Inapoi la <a href="/">produse</a></div>
+                </div>
+                <div itemscope="" itemtype="http://schema.org/Product" id="product-9" class="post-9 product type-product status-publish has-post-thumbnail sale shipping-taxable purchasable product-type-simple instock">
+                    <div class="row">
+                        <div class="col-md-5 product-img-case">
+						{#
+                            <span class="onsale bg_primary headerfont">Sale!</span>
+							#}
+                            <div class="images kad-light-gallery">
+								{% if firstImage %}{% set productImage = imagesWWW ~ firstImage %}{% else %}{% set productImage = noImage %}{% endif %}
+                                <div class="product_image">
+									<a href="{{ productImage }}" itemprop="image" class="woocommerce-main-image zoom" title="{{ product.title }}" data-rel="lightbox">
+										<img width="458" height="458" src="{{ productImage }}" class="attachment-shop_single wp-post-image" title="{{ product.title }}"></a>	
+                                </div>
+                            </div>
+						</div>
+                        <div class="col-md-7 product-summary-case">
+                            <div class="summary entry-summary">
+								<h1 itemprop="name" class="product_title entry-title">{{ product.title }}</h1>
+                                <div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" class="pricebox">
+									<p class="product_price price headerfont"><ins><span class="amount">€{{ product.price }}</span></ins></p>
+									<meta itemprop="price" content="{{ product.price }}">
+                                    <meta itemprop="priceCurrency" content="EUR">
+                                    <link itemprop="availability" href="http://schema.org/InStock">
+                                </div>
+                                <div itemprop="description" class="short_description">
+									<p>COD: {{ product.code }}</p>
+                                </div>
+								<form class="cart" method="post" enctype="multipart/form-data" action="{{ path('add_to_cart', {slug: product.slug}) }}">
+                                    <div class="quantity buttons_added"><input type="button" value="-" class="minus"><input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="input-text qty text" size="4"><input type="button" value="+" class="plus"></div>
+                                    <button type="submit" class="kad_add_to_cart headerfont kad-btn kad-btn-primary button alt">Adauga la cos</button>
+                                </form>
+                                <div class="product_meta">
+                                </div>
+                            </div>
+                            <!-- .summary -->
+                        </div>
+                    </div>
+                    <div class="woocommerce-tabs">
+                        <ul class="tabs">
+                            <li class="description_tab active">
+                                <a href="#tab-description">Descriere</a>
+                            </li>
+                        </ul>
+                        <div class="panel entry-content" id="tab-description" style="display: block;">
+                            <h2>Descriere produs</h2>
+							{{ product.description|nl2br }}
+                        </div>
+                    </div>
+                </div>
+                <!-- #product-9 -->
+            </div>
+        </div>
+        <!-- /.row-->
+    </div>
+    <!-- /.content -->
+</div>
+<script>
+jQuery(function($){$("div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)").addClass("buttons_added").append('<input type="button" value="+" class="plus" />').prepend('<input type="button" value="-" class="minus" />'),$(document).on("click",".plus, .minus",function(){var t=$(this).closest(".quantity").find(".qty"),a=parseFloat(t.val()),n=parseFloat(t.attr("max")),s=parseFloat(t.attr("min")),e=t.attr("step");a&&""!==a&&"NaN"!==a||(a=0),(""===n||"NaN"===n)&&(n=""),(""===s||"NaN"===s)&&(s=0),("any"===e||""===e||void 0===e||"NaN"===parseFloat(e))&&(e=1),$(this).is(".plus")?t.val(n&&(n==a||a>n)?n:a+parseFloat(e)):s&&(s==a||s>a)?t.val(s):a>0&&t.val(a-parseFloat(e)),t.trigger("change")})});
+</script>
+{% endblock %}

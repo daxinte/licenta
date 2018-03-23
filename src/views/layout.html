@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en-US">
+    <![endif]-->
+    <!--[if IE 7]>         
+    <html class="no-js lt-ie9 lt-ie8" lang="en-US">
+        <![endif]-->
+        <!--[if IE 8]>         
+        <html class="no-js lt-ie9" lang="en-US">
+            <![endif]-->
+            <!--[if gt IE 8]><!--> 
+            <html class="no-js" lang="en-US">
+                <!--<![endif]-->
+                <head>
+                    <meta charset="utf-8">
+                    <title>{% block title %}Webstore{% endblock %}</title>
+                    <style type="text/css">
+                        img.wp-smiley,
+                        img.emoji {
+                        display: inline !important;
+                        border: none !important;
+                        box-shadow: none !important;
+                        height: 1em !important;
+                        width: 1em !important;
+                        margin: 0 .07em !important;
+                        vertical-align: -0.1em !important;
+                        background: none !important;
+                        padding: 0 !important;
+                        }
+                    </style>
+                    <link rel='stylesheet' id='kadence_theme-css'  href='/css/virtue.css?ver=248' type='text/css' media='all' />
+                    <link rel='stylesheet' id='virtue_skin-css'  href='/css/skins/default.css' type='text/css' media='all' />
+                    <link rel='stylesheet' id='redux-google-fonts-virtue-css'  href='http://fonts.googleapis.com/css?family=Lato&#038;ver=1435178213' type='text/css' media='all' />
+                    <script type='text/javascript' src='/js/jquery/jquery.js?ver=1.11.2'></script>
+                    <script type='text/javascript' src='/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+                    <script type='text/javascript' src='/js/vendor/modernizr.min.js'></script>
+                    <style type="text/css">#logo {padding-top:25px;}#logo {padding-bottom:10px;}#logo {margin-left:0px;}#logo {margin-right:0px;}#nav-main {margin-top:40px;}#nav-main {margin-bottom:10px;}.headerfont, .tp-caption {font-family:Lato;} 
+                        .topbarmenu ul li {font-family:Lato;}
+                        #kadbreadcrumbs {font-family:Verdana, Geneva, sans-serif;}.product_item .product_details h5 {text-transform: none;}.product_item .product_details h5 {min-height:40px;}
+                    </style>
+                    <style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+                    <style type="text/css" title="dynamic-css" class="options-output">header #logo a.brand,.logofont{font-family:Lato;line-height:40px;font-weight:normal;font-style:400;font-size:32px;}.kad_tagline{font-family:Lato;line-height:20px;font-weight:normal;font-style:400;color:#444444;font-size:14px;}.product_item .product_details h5{font-family:Lato;line-height:20px;font-weight:normal;font-style:700;font-size:16px;}h1{font-family:Lato;line-height:40px;font-weight:normal;font-style:400;font-size:38px;}h2{font-family:Lato;line-height:40px;font-weight:normal;font-style:normal;font-size:32px;}h3{font-family:Lato;line-height:40px;font-weight:normal;font-style:400;font-size:28px;}h4{font-family:Lato;line-height:40px;font-weight:normal;font-style:400;font-size:24px;}h5{font-family:Lato;line-height:24px;font-weight:normal;font-style:700;font-size:18px;}body{font-family:Verdana, Geneva, sans-serif;line-height:20px;font-weight:normal;font-style:400;font-size:14px;}#nav-main ul.sf-menu a{font-family:Lato;line-height:18px;font-weight:normal;font-style:400;font-size:12px;}#nav-second ul.sf-menu a{font-family:Lato;line-height:22px;font-weight:normal;font-style:400;font-size:18px;}.kad-nav-inner .kad-mnav, .kad-mobile-nav .kad-nav-inner li a,.nav-trigger-case{font-family:Lato;line-height:20px;font-weight:normal;font-style:400;font-size:16px;}</style>
+					{% block additional_css %}{% endblock %}
+                </head>
+                <body class="home archive post-type-archive post-type-archive-product woocommerce woocommerce-page wide">
+                    <div id="wrapper" class="container">
+                        <header class="banner headerclass" role="banner">
+                            <section id="topbar" class="topclass">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 kad-topbar-left">
+                                            <div class="topbarmenu clearfix">
+                                                <ul class="kad-cart-total">
+                                                    <li>
+														<a class="cart-contents" href="{{ path('cart') }}" title="View your shopping cart">
+															{% set itemsNo = app['session'].get('cart').getItemsNo() %}
+															<i class="icon-shopping-cart" style="padding-right:5px;"></i> Cosul meu <span class="kad-cart-dash">-</span> <span class="amount">&euro; {{ app['session'].get('cart').totals }} ( {{ itemsNo }} produs{% if itemsNo ==1 %}{% else %}e{% endif %} )</span>
+														</a>
+                                                    </li>
+                                                    {% if is_granted('ROLE_USER') %}
+													<li>
+														<a href="{{ path('orders') }}">Comenzi</a>
+                                                    </li>
+													{% endif %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- close col-md-6 --> 
+                                        <div class="col-md-3 col-sm-3 kad-topbar-right">
+                                            <div id="topbar-search" class="topbar-widget">
+                                                <form role="search" method="get" id="searchform" class="form-search" action="/">
+                                                    <label class="hide" for="s">Cauta:</label>
+                                                    <input type="text" value="" name="s" id="s" class="search-query" placeholder="Cauta">
+                                                    <button type="submit" id="searchsubmit" class="search-icon"><i class="icon-search"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3 kad-topbar-right">
+                                            <div class="topbarmenu clearfix">
+                                                <ul class="kad-cart-total">
+													{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                                    <li style="padding-top: 7px">
+														<span>Salut {{ app.user.displayName }}!</span>
+                                                    </li>
+                                                    <li>
+														<a class="cart-contents" href="{{ path('user.logout') }}" title="Iesire">
+															Iesire
+														</a>
+                                                    </li>
+                                                    {% if is_granted('ROLE_ADMIN') %}
+													<li>
+														<a href="{{ path('admin_dashboard') }}">[admin]</a>
+                                                    </li>
+													{% endif %}
+													{% else %}
+                                                    <li>
+														<a class="cart-contents" href="{{ path('user_register') }}" title="Inregistrare">
+															Inregistrare
+														</a>
+                                                    </li>
+                                                    <li>
+														<a class="cart-contents" href="{{ path('login_form') }}" title="Autentificare">
+															Autentificare
+														</a>
+                                                    </li>
+													{% endif %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- close col-md-6-->
+                                    </div>
+                                    <!-- Close Row -->
+                                </div>
+                                <!-- Close Container -->
+                            </section>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-4 clearfix kad-header-left">
+                                        <div id="logo" class="logocase">
+                                            <a class="brand logofont" href="/">
+												{{ app['cms.settings']['APP_NAME'] }}              </a>
+                                        </div>
+                                        <!-- Close #logo -->
+                                    </div>
+                                    <!-- close logo span -->
+                                </div>
+                                <!-- Close Row -->
+                            </div>
+                            <!-- Close Container -->
+                        </header>
+
+
+
+                        {% block content %}{% endblock %}
+
+
+                        <!-- /.wrap -->
+                        <footer id="containerfooter" class="footerclass" role="contentinfo">
+                            <div class="container">
+                                <div class="row">
+                                </div>
+                                <div class="footercredits clearfix">
+                                    <p>&copy; 2015 - Webstore by Daniel Axinte</p>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                    <!--Wrapper-->
+					{% block additional_javascript %}{% endblock %}
+                </body>
+            </html>

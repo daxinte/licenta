@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block title %}Comenzi{% endblock %}
+
+{% block content %}
+<div role="document" class="wrap contentclass">
+    <div class="container">
+        <div class="woocommerce"></div>
+    </div>
+    <div class="titleclass" id="pageheader">
+        <div class="container">
+            <div class="page-header">
+                <h1 itemprop="name" class="entry-title">
+					{{ pageTitle }}
+                </h1>
+            </div>
+        </div>
+        <!--container-->
+    </div>
+    <!--titleclass-->
+    <div class="container" id="content">
+        <div class="row">
+            <div role="main" class="main col-md-12">
+                <div itemprop="mainContentOfPage" class="entry-content">
+                    <div class="woocommerce">
+						{% if not orders %}
+						<p class="cart-empty">Momentan, nu ati efectuat nici o comanda.</p>
+						{% else %}
+                        <form method="post" action="">
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">&nbsp;</th>
+                                        <th class="product-name">Data</th>
+                                        <th class="product-price">Nr. Produse</th>
+                                        <th class="product-quantity">Total</th>
+                                        <th class="product-subtotal">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+									{% for o in orders %}
+                                    <tr class="cart_item">
+                                        <td>
+											{{ loop.index }}
+                                        </td>
+                                        <td class="product-name">
+											{{ o.date|date("M.d.Y H:i") }}
+                                        </td>
+                                        <td class="product-price">
+											<span>{{ o.getItemsNo() }}</span>
+                                        </td>
+                                        <td class="product-quantity">
+											<span class="amount">&euro; {{ o.getTotals() }}</span>
+                                        </td>
+                                        <td class="product-subtotal">
+											<a href="{{ path('order_details', {id: o.id}) }}">Produse</a>
+                                        </td>
+                                    </tr>
+									{% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
+
+						{% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- /.main -->            
+        </div>
+        <!-- /.row-->
+    </div>
+    <!-- /.content -->
+</div>
+{% endblock %}

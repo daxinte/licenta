@@ -1,0 +1,84 @@
+{% extends 'layout.html' %}
+
+{% block title %} {{ pageTitle }} {% endblock %}
+
+{% block content %}
+<div role="document" class="wrap contentclass">
+    <div class="container">
+        <div class="woocommerce"></div>
+    </div>
+    <div class="titleclass" id="pageheader">
+        <div class="container">
+            <div class="page-header">
+                <h1 itemprop="name" class="entry-title">
+					{{ pageTitle }}
+                </h1>
+            </div>
+        </div>
+        <!--container-->
+    </div>
+    <!--titleclass-->
+    <div class="container" id="content">
+        <div class="row">
+            <div role="main" class="main col-md-12">
+                <div itemprop="mainContentOfPage" class="entry-content">
+                    <div class="woocommerce">
+						{% if not items %}
+						<p class="cart-empty">Aceasta comanda nu contine nici un produs.</p>
+						{% else %}
+                        <form method="post" action="">
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">&nbsp;</th>
+                                        <th class="product-name">Produs</th>
+                                        <th class="product-price">Cod Produs</th>
+                                        <th class="product-quantity">Pret unitar</th>
+                                        <th class="product-quantity">Cantitate</th>
+                                        <th class="product-subtotal">Pret total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+									{% for i in items %}
+                                    <tr class="cart_item">
+                                        <td>
+											{{ loop.index }}
+                                        </td>
+                                        <td class="product-name">
+											{{ i.title }}
+                                        </td>
+                                        <td class="product-price">
+											<span>{{ i.code }}</span>
+                                        </td>
+                                        <td class="product-quantity">
+											<span class="amount">&euro; {{ i.price}}</span>
+                                        </td>
+                                        <td class="product-quantity">
+											<span class="amount">{{ i.quantity}}</span>
+                                        </td>
+                                        <td class="product-subtotal">
+											<span class="amount">{{ i.quantity * i.price}}</span>
+                                        </td>
+                                    </tr>
+									{% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
+                        <div class="cart-collaterals">
+                            <div class="cart_totals ">
+                                <div class="wc-proceed-to-checkout">
+									<a class="checkout-button button alt wc-forward" href="{{ path('orders') }}">Inapoi la comenzi</a>
+                                </div>
+                            </div>
+                        </div>
+						{% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- /.main -->            
+        </div>
+        <!-- /.row-->
+    </div>
+    <!-- /.content -->
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'admin/layout.html' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block content %}
+<ol class="breadcrumb">
+	<li><a href="{{ app.url_generator.generate('admin_homepage') }}">Home</a></li>
+	<li class="active">Setari</li>
+</ol>
+<h3>Setari</h3>
+<div class="panel-body">
+	{% for message in app.session.getFlashBag.get('message') %}
+	<div class="alert alert-success" role="alert">{{ message }}</div>
+	{% endfor %}
+	<form action="" method="post" class="form-horizontal">
+		{{ form_widget(form) }}
+	</form>
+</div>
+{% endblock %}

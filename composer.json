@@ -1,0 +1,37 @@
+{
+    "require": {
+        "silex/silex": "~1.2",
+        "doctrine/dbal": "~2.2",
+        "twig/twig": "~1.0",
+        "symfony/translation": "~2.6",
+        "symfony/config": "~2.6",
+        "symfony/yaml": "~2.6",
+        "symfony/form": "~2.6",
+        "symfony/security-csrf": "~2.6",
+        "symfony/twig-bridge": "~2.6",
+        "symfony/validator": "~2.6",
+        "symfony/security": "~2.6",
+        "vlucas/spot2": "~2.1",
+        "swiftmailer/swiftmailer": "~5.4",
+		"deralex/yaml-config-service-provider": "1.0.x-dev",
+		"imagine/imagine": "~0.5.0",
+        "symfony/filesystem": "^2.6",
+        "jasongrimes/silex-simpleuser": "^2.0"
+    },
+	"autoload": {
+        "psr-4": {
+			"": "src/",
+            "Handlers\\": "src/handlers",
+            "Handlers\\Db\\": "src/handlers/db",
+            "Util\\": "src/util",
+            "Forms\\": "src/forms",
+            "Controllers\\": "src/controllers",
+            "Controllers\\Admin\\": "src/controllers/admin",
+            "Services\\": "src/services",
+            "Provider\\": "src/providers",
+            "Entity\\": "src/entities",
+            "Traits\\": "src/traits",
+            "Mapper\\": "src/mappers"
+		}
+	}
+}
